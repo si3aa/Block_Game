@@ -35,7 +35,7 @@ body {
   text-align: center;
 }
 
-/* Info Container - Centered Name, Tries, and Remaining Tries */
+/* Info Container */
 .info-container {
   width: 1080px;
   margin: 20px auto;
@@ -44,7 +44,7 @@ body {
   border: 2px solid #2196f3;
   display: flex;
   align-items: center;
-  justify-content: space-around; /* Center elements */
+  justify-content: space-around;
   text-align: center;
   font-size: 18px;
   font-weight: bold;
@@ -77,6 +77,18 @@ body {
   position: relative;
 }
 
+/* Block Faces */
+.memory-game-blocks .game-block .face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  backface-visibility: hidden;
+  border: 5px solid #2196f3;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
 /* Front Face */
 .memory-game-blocks .game-block .front {
   background-color: #333;
@@ -94,24 +106,16 @@ body {
 .memory-game-blocks .game-block .back {
   background-color: #607d8b;
   transform: rotateY(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .memory-game-blocks .game-block .back img {
-  width: 140px;
-  height: 140px;
-  margin-top: 30px;
-}
-
-/* Block Faces */
-.memory-game-blocks .game-block .face {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  backface-visibility: hidden;
-  border: 5px solid #2196f3;
-  border-radius: 10px;
-  overflow: hidden;
+  width: 90%;
+  height: 90%;
+  margin: 0;
+  object-fit: fill;
 }
 
 /* Flip and Match Animation */
@@ -166,16 +170,16 @@ body {
   transform: translate(-50%, -50%);
   padding: 25px 50px;
   font-size: 24px;
-  background-color: #4caf50;
+  background-color: #62ec67;
   color: white;
-  border: none;
+  border: 2px solid #2196f3;
   border-radius: 8px;
   cursor: pointer;
   z-index: 1000;
 }
 
 #restart-btn:hover {
-  background-color: #45a049;
+  background-color: #939bf0;
 }
 
 /* Game Over Screen */
@@ -193,24 +197,28 @@ body {
 }
 
 .game-over-message {
-  background: #fff;
-  padding: 2rem;
-  border-radius: 10px;
+  background: #ff0000; 
+  padding: 3rem 4rem;
+  border-radius: 15px;
   text-align: center;
+  color: white; 
+  min-width: 400px; 
 }
 
 .game-over-message h2 {
-  color: #f44336;
-  margin-bottom: 1rem;
+  color: #ffffff; 
+  margin-bottom: 1.5rem;
+  font-size: 2rem; 
 }
 
 .game-over-message p {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem; 
 }
 
 #try-again-btn {
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
+  padding: 1rem 2rem; 
+  font-size: 1.25rem; 
   background-color: #2196f3;
   color: white;
   border: none;
