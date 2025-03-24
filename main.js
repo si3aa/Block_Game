@@ -1,88 +1,157 @@
 "use strict";
 
 // Select Elements
-const splashScreen = document.querySelector(".splash");
-const splashSpan = document.querySelector(".splash span");
-const infoContainer = document.querySelector(".info-container");
-const name = document.querySelector(".info-container .name span");
-const tries = document.querySelector(".info-container .tries span");
-const blockContainer = document.querySelector(".memory-game-blocks"); 
-const cards = document.querySelectorAll(".memory-game-blocks .game-block");
-
-splashSpan.onclick = function () {
-  let yourName = prompt("Please Enter Your Name");
-  if (yourName == null || yourName == "") {
-    name.innerHTML = "Unknown";
-  } else {
-    name.innerHTML = yourName;
-  }
-  splashScreen.remove();
+const elements = {
+  splashScreen: document.querySelector(".splash"),
+  splashSpan: document.querySelector(".splash span"),
+  infoContainer: document.querySelector(".info-container"),
+  name: document.querySelector(".info-container .name span"),
+  tries: document.querySelector(".info-container .tries span"),
+  blockContainer: document.querySelector(".memory-game-blocks"),
+  cards: document.querySelectorAll(".memory-game-blocks .game-block"),
+  restartBtn: document.querySelector("#restart-btn"),
 };
 
-const duration = 750; 
+// Audio Elements
+const sounds = {
+  victory: document.getElementById("win"),
+  fail: document.getElementById("fail"),
+  success: document.getElementById("success"),
+};
 
-// Create Array From Game Blocks
-let blocks = Array.from(cards);
+// Constants
+const DURATION = 750;
+let playerName = ""; // Store player's name
+
+// Game State
+let blocks = Array.from(elements.cards);
 let orderRange = Array.from(Array(blocks.length).keys());
-shuffle(orderRange);
 
-// Add Order Css Property To Game Blocks
-blocks.forEach((block, index) => {
-  block.style.order = orderRange[index];
-  block.addEventListener("click", () => {
-    flipBlock(block);
+// Initialize Game Blocks
+function initializeBlocks() {
+  shuffle(orderRange);
+  blocks.forEach((block, index) => {
+    block.style.order = orderRange[index];
+    block.addEventListener("click", () => flipBlock(block));
   });
-});
+}
 
-// Flip Block Function
+// Splash Screen Setup
+function setupSplashScreen() {
+  elements.splashSpan.onclick = () => {
+    if (!playerName) {
+      playerName = prompt("Please Enter Your Name") || "Unknown";
+    }
+    startGame();
+  };
+}
+
+// Start Game Function
+function startGame() {
+  elements.name.innerHTML = playerName;
+  elements.tries.innerHTML = "0";
+  elements.splashScreen.style.display = "none";
+  elements.restartBtn.style.display = "none";
+  resetGame();
+}
+
+// Flip Block Logic
 function flipBlock(selectedBlock) {
   selectedBlock.classList.add("is-flipped");
+  const flippedBlocks = blocks.filter(block => block.classList.contains("is-flipped"));
 
-  let allFlippedBlocks = blocks.filter((flippedBlock) =>
-    flippedBlock.classList.contains("is-flipped")
-  );
-
-  if (allFlippedBlocks.length === 2) {
+  if (flippedBlocks.length === 2) {
     stopClicking();
-    checkMatchedBlocks(allFlippedBlocks[0], allFlippedBlocks[1]);
+    checkMatchedBlocks(flippedBlocks[0], flippedBlocks[1]);
   }
 }
 
-// Shuffle Function
+// Shuffle Algorithm
 function shuffle(array) {
-  let current = array.length,
-    temp,
-    random;
+  let current = array.length;
   while (current > 0) {
-    random = Math.floor(Math.random() * current);
+    const random = Math.floor(Math.random() * current);
     current--;
-    temp = array[current];
-    array[current] = array[random];
-    array[random] = temp;
+    [array[current], array[random]] = [array[random], array[current]];
   }
   return array;
 }
 
-// Stop Clicking Function
+// Prevent Clicking
 function stopClicking() {
-  blockContainer.classList.add("no-clicking");
-  setTimeout(() => {
-    blockContainer.classList.remove("no-clicking");
-  }, duration);
+  elements.blockContainer.classList.add("no-clicking");
+  setTimeout(() => elements.blockContainer.classList.remove("no-clicking"), DURATION);
 }
 
-// Check Matched Blocks Function
+// Check Matches
 function checkMatchedBlocks(firstBlock, secondBlock) {
   if (firstBlock.dataset.technology === secondBlock.dataset.technology) {
     firstBlock.classList.add("has-match");
     secondBlock.classList.add("has-match");
     firstBlock.classList.remove("is-flipped");
     secondBlock.classList.remove("is-flipped");
+    sounds.success.play();
+
+    if (blocks.every(block => block.classList.contains("has-match"))) {
+      celebrateVictory();
+    }
   } else {
-    tries.innerHTML = parseInt(tries.innerHTML) + 1;
+    elements.tries.innerHTML = parseInt(elements.tries.innerHTML) + 1;
+    sounds.fail.play();
     setTimeout(() => {
       firstBlock.classList.remove("is-flipped");
       secondBlock.classList.remove("is-flipped");
-    }, duration);
+    }, DURATION);
   }
 }
+
+// Victory Celebration
+function celebrateVictory() {
+  sounds.victory.play();
+
+  const victoryMessage = document.createElement("div");
+  victoryMessage.className = "victory-message";
+  victoryMessage.innerHTML = `Congratulations ${playerName}! You won in ${elements.tries.innerHTML} tries!`;
+  document.body.appendChild(victoryMessage);
+
+  for (let i = 0; i < 100; i++) {
+    createConfetti();
+  }
+
+  setTimeout(() => {
+    victoryMessage.remove();
+    elements.restartBtn.style.display = "block";
+  }, 5000);
+}
+
+// Create Confetti
+function createConfetti() {
+  const confetti = document.createElement("div");
+  confetti.className = "confetti";
+  confetti.style.left = `${Math.random() * 100}vw`;
+  confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+  confetti.style.animationDuration = `${Math.random() * 2 + 2}s`;
+  document.body.appendChild(confetti);
+  setTimeout(() => confetti.remove(), 4000);
+}
+
+// Restart Game
+function resetGame() {
+  elements.tries.innerHTML = "0";
+  blocks.forEach(block => {
+    block.classList.remove("has-match", "is-flipped");
+  });
+  shuffle(orderRange);
+  blocks.forEach((block, index) => {
+    block.style.order = orderRange[index];
+  });
+}
+
+// Restart Button Click Event
+elements.restartBtn.addEventListener("click", () => {
+  startGame(); // Restart game without asking for name again
+});
+
+// Initial Setup
+setupSplashScreen();
+initializeBlocks();
