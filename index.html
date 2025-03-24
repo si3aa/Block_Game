@@ -11,8 +11,9 @@
       <span>Start Game</span>
     </div>
     <div class="info-container">
-      <div class="name">Hello: <span></span></div>
-      <div class="tries">Wrong Tries:<span>0</span></div>
+      <p class="name">Player: <span></span></p>
+      <p class="tries">Wrong Tries: <span>0</span></p>
+      <p class="remaining-tries">Remaining Tries: <span>20</span></p>
     </div>
     <div class="memory-game-blocks">
       <div class="game-block" data-technology="angular">
@@ -139,6 +140,7 @@
     <audio id="success" src="audio/yay.mp3" preload="auto"></audio>
     <audio id="fail" src="audio/cartoon-fail-.mp3" preload="auto"></audio>
     <audio id="win" src="audio/win.mp3" preload="auto"></audio>
+    <audio id="game-over" src="audio/game-over.mp3" preload="auto"></audio>
     <button id="restart-btn" style="display: none">Restart Game</button>
     <script src="main.js"></script>
   </body>
