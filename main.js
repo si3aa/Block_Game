@@ -37,11 +37,38 @@ const gameState = {
 // Game Over Screen
 const gameOverScreen = createGameOverScreen();
 
+// Security Measures
+function enhanceSecurity() {
+  // Disable right-click
+  document.addEventListener("contextmenu", (e) => e.preventDefault());
+
+  // Disable common developer tools shortcuts
+  document.addEventListener("keydown", (e) => {
+    if (
+      e.key === "F12" || // F12
+      (e.ctrlKey && e.shiftKey && e.key === "I") || // Ctrl+Shift+I
+      (e.ctrlKey && e.shiftKey && e.key === "J") || // Ctrl+Shift+J
+      (e.ctrlKey && e.key === "U") // Ctrl+U
+    ) {
+      e.preventDefault();
+    }
+  });
+
+  // Optional: Alert user (uncomment if desired)
+  document.addEventListener("contextmenu", () =>
+    alert("Right-click is disabled!")
+  );
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "F12") alert("Developer tools are disabled!");
+  });
+}
+
 // Initialize Game
 function initializeGame() {
   gameState.orderRange = Array.from(Array(gameState.blocks.length).keys());
   setupSplashScreen();
   initializeBlocks();
+  enhanceSecurity();
 }
 
 // Create Game Over Screen

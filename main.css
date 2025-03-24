@@ -1,6 +1,7 @@
 /* Global Styles */
 * {
   box-sizing: border-box;
+  user-select: none;
 }
 
 body {
@@ -8,6 +9,12 @@ body {
   margin: 0;
   padding: 0;
   background-color: #f0f0f0;
+}
+.no-select {
+  user-select: none;
+  -webkit-user-select: none; 
+  -moz-user-select: none; 
+  -ms-user-select: none; 
 }
 
 /* Splash Screen */
