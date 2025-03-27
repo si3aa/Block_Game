@@ -53,15 +53,15 @@ function enhanceSecurity() {
       e.preventDefault();
     }
   });
-
-  // Optional: Alert user (uncomment if desired)
-  document.addEventListener("contextmenu", () =>
-    alert("Right-click is disabled!")
-  );
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "F12") alert("Developer tools are disabled!");
-  });
 }
+//   // Optional: Alert user (uncomment if desired)
+//   document.addEventListener("contextmenu", () =>
+//     alert("Right-click is disabled!")
+//   );
+//   document.addEventListener("keydown", (e) => {
+//     if (e.key === "F12") alert("Developer tools are disabled!");
+//   });
+// }
 
 // Initialize Game
 function initializeGame() {
