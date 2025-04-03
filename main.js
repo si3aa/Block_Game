@@ -193,6 +193,7 @@ function checkGameOver() {
 function stopGame() {
   elements.blockContainer.classList.add("no-clicking");
   gameOverScreen.style.display = "flex";
+  elements.splashScreen.style.display = "flex";
   sounds.gameOver?.play();
 }
 
@@ -210,6 +211,7 @@ function celebrateVictory() {
   }
 
   setTimeout(() => {
+    elements.splashScreen.style.display = "flex";
     victoryMessage.remove();
     elements.restartBtn.style.display = "block";
   }, 5000);

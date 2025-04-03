@@ -186,7 +186,7 @@ body {
 }
 
 #restart-btn:hover {
-  background-color: #939bf0;
+  background-color: red;
 }
 
 /* Game Over Screen */
